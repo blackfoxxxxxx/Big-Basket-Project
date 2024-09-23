@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Basket</title>
+    <style>
+        body {
+            background-color: rgba(135, 223, 116, 0.993);
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px;
+            width: 100%;
+            background-color: #1f2131e5;
+            padding: 0px 100px 0px 70px;
+            color: white;
+            box-shadow: 10px 10px 10px grey;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .navbar h1 {
+            font-size: 2.2rem;
+            color: yellow;
+        }
+        .navbar .search-bar {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        .navbar .search-bar input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border-radius: 5px 0 0 5px;
+            border: 2px solid yellow;
+            outline: none;
+        }
+        .navbar .search-bar button {
+            padding: 10px;
+            border-radius: 0 5px 5px 0;
+            border: 2px solid yellow;
+            border-left: none;
+            background-color: yellow;
+            color: #1f2131e5;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .navbar ul {
+            display: flex;
+            list-style: none;
+            margin-right: 95px; /* Adjust this value to move the button more or less */
+        }
+        .navbar a {
+            text-decoration: none;
+            padding: 8px 35px;
+            color: white;
+            font-weight: bold;
+            border-radius: 14px;
+            transition: all 0.6s ease-in-out;
+        }
+        .navbar a:hover {
+            color: greenyellow;
+            border-bottom: 2px solid greenyellow;
+        }
+        .navbar li {
+            padding: 0px 7px;
+        }
+        .login-button {
+            padding: 5px 10px;
+            border-radius: 6px;
+            background-color: transparent;
+            border: 2px solid yellow;
+            color: yellow;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+        }
+        .login-button:hover {
+            background-color: yellow;
+            color: #1f2131e5;
+        }
+        main {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 93vh;
+            background: url(../static/images/basket.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-blend-mode: darken;
+            position: relative;
+            top: 0px;
+            z-index: -1;
+        }
+        .container {
+            width: 850px;
+            text-align: center;
+            padding: 40px;
+            border: 10px solid rgb(7, 7, 7);
+            opacity: 0.8;
+            border-radius: 20px;
+            word-spacing: 2;
+            z-index: 0.5;
+            box-shadow: 5px 5px 35px black;
+        }
+        .container h4 {
+            font-weight: bold;
+            letter-spacing: 1.5;
+        }
+       footer {
+            padding: 15px 10px;
+            text-align: center;
+            background-color: #22263a;
+            font-weight: bold;
+            border-top-left-radius: 30%;
+            border-top-right-radius: 30%;
+        }
+        footer p {
+            margin: 10px;
+            font-style: italic;
+            color: antiquewhite;
+        }
+        .center-text {
+            text-align: center;
+            font-style: italic;
+            color: #fff;
+            padding: 2px 4px;
+        }
+        .large-font {
+            font-size: 36px; /* Adjust the size as needed */
+        }
+        .categories .box-container {
+            border: 0px solid;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+            gap: 0.5rem;
+            text-align: center;
+        }
+        .categories .box-container .box {
+            padding: 1rem 0;
+            background: #fff;
+            border-radius: 0.5rem;
+            box-shadow: var(--box-shadow);
+            outline: var(--outline);
+            outline-offset: -1rem;
+            text-align: center;
+        }
+        .categories .box-container .box.box:hover {
+            box-shadow: 1px 1px 10px 4px var(--green);
+        }
+        .categories .box-container .box img {
+            margin: 1rem 0;
+            height: 9rem;
+        }
+           body {
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal overflow for the body */
+        }
+
+        .landing_footer {
+            margin-top: 10px;
+            padding: 15px 10px;
+            text-align: center;
+            background-color: #f2f206de;
+            font-weight: bold;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            color: rgb(14, 14, 14) !important;
+            border: 1px solid #000;
+            border-radius: 0;
+
+            h2{
+                color: green;
+            }
+        }
+
+        .dropdown{
+            display: inline-block;
+        }
+        .dropdown button{
+            background-color: hsl(0, 0%, 80%);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+        .dropdown a{
+            display: block;
+            color: black;
+            text-decoration: none;
+            padding: 10px 15px;
+        }
+        .dropdown .content{
+            display: none;
+            position: absolute;
+            background-color: hsl(0, 0%, 95%);
+            min-width: 100px;
+            box-shadow: 2px 2px 5px hsla(0, 0%, 0%, 0.8);
+        }
+        .dropdown:hover .content{
+            display: block;
+        }
+        .dropdown:hover button{
+            background-color: hsl(0, 0%, 70%);
+        }
+        .dropdown a:hover{
+            background-color: hsl(0, 0%, 90%);
+        }
+        
+      
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>BIG BASKET STORE</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for products...">
+            <button type="button" onclick="searchProduct()">Search</button>
+        </div>
+        <ul>
+            <li><a href="{% url 'login' %}" class="login-button">Login</a></li>
+        </ul>
+    </nav>
+    <main>
+        <!-- Main content here -->
+    </main>
+    <section class="categories" id="categories">
+        <h1 class="heading center-text large-font"> SHOP BY CATEGORIES</h1>
+        <div class="box-container">
+            <div class="box">
+                <img src="../static/images/001.jpg">
+                <div class="dropdown">
+                    <button>Fruits</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Apple</a>
+                        <a href="">Orange</a>
+                        <a href="">Kiwi</a>
+                        <a href="">Banana</a>
+                        <a href="">Watermelon</a>
+                        <a href="">Mango</a>
+                        <a href="">Papaya</a>
+                        <a href="">Pomegranate</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/001.jpg">
+                <div class="dropdown">
+                    <button>Vegetables</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Onion</a>
+                        <a href="">Potato</a>
+                        <a href="">Tomato</a>
+                        <a href="">Cucumber</a>
+                        <a href="">Coconut</a>
+                        <a href="">Green Chilli</a>
+                        <a href="">Capsicum</a>
+                        <a href="">Carrot</a>
+                        <a href="">Cabbage</a>
+                        <a href="">Garlic</a>
+                        <a href="">Ginger</a>
+                        <a href="">Coriander</a>
+                        <a href="">Spinach</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/002.jpg">
+                <div class="dropdown">
+                    <button>Egg Meat & Fish</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Fresh Chicken</a>
+                        <a href="">Mutton & Lamb</a>
+                        <a href="">Marine Fish</a>
+                        <a href="">Boneless & Fillets</a>
+                        <a href="">Eggs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/003.jpg">
+                <div class="dropdown">
+                    <button>Rice Atta Dal</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Dal & Other Grains</a>
+                        <a href="">Atta & Flours</a>
+                        <a href="">Pulses</a>
+                        <a href="">Rice</a>
+                        <a href="">Soya</a>
+                        <a href="">Poha</a>
+                        <a href="">Whole Grains</a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/004.jpg">
+                <div class="dropdown">
+                    <button>Oil Masala Sauces</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Refined oil</a>
+                        <a href="">Powdered Masalas</a>
+                        <a href="">Spices</a>
+                        <a href="">Whole Masalas</a>
+                        <a href="">Salt</a>
+                        <a href="">Ghee</a>
+                        <a href="">Sugar & Honey</a>
+                        <a href="">Sauces</a>
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <img src="../static/images/005.jpg">
+                <div class="dropdown">
+                    <button>Snacks & Biscuits</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Biscuits</a>
+                        <a href="">Indian Snacks</a>
+                        <a href="">Dry fruits & Nuts</a>
+                        <a href="">Cakes</a>
+                        <a href="">Chips</a>
+                        <a href="">Indian Sweets</a>
+                        <a href="">Popcorn</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/06.jpg">
+                <div class="dropdown">
+                    <button>Instant & Frozen Food</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Sweet Dish Mixes</a>
+                        <a href="">Frozen Snacks</a>
+                        <a href="">Soups</a>
+                        <a href="">Noodles</a>
+                        <a href="">Batters & breakfast mixes</a> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/007.jpg">
+                <div class="dropdown">
+                    <button>Diary & Bread</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Bread & Bakery</a>
+                        <a href="">Butter & cheese</a>
+                        <a href="">Milk</a>
+                        <a href="">Dahi & yogurt</a>
+                        <a href="">Milk Substitutes</a>
+                        <a href="">Milkshakes & lassi</a>
+                        <a href="">Paneer & tofu</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box">
+                <img src="../static/images/008.jpg">
+                <div class="dropdown">
+                    <button>Chocolates & Ice creams</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Ice cream</a>
+                        <a href="">Sweets & Chocolate Gifts</a>
+                        <a href="">Chocolate Candy</a>
+                        <a href="">Candies & Mints</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/009.jpg">
+                <div class="dropdown">
+                    <button>Breakfast Food</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Oats</a>
+                        <a href="">Honey, jams & spreads</a>
+                        <a href="">Corn flakes & Muesli</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/010.jpg">
+                <div class="dropdown">
+                    <button>Tea & Coffee</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Black tea</a>
+                        <a href="">Coffee</a>
+                        <a href="">Green tea</a>
+                        <a href="">Iced tea</a>
+                        <a href="">Flavoured tea</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/011.jpg">
+                <div class="dropdown">
+                    <button>Health & Nutrition</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Drink mixes</a>
+                        <a href="">Sam Fit Pro</a>
+                        <a href="">Herbalife</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/012.jpg">
+                <div class="dropdown">
+                    <button>Cleaning & Household</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Dishwashing supplies</a>
+                        <a href="">Household cleaners</a>
+                        <a href="">Laundry detergents</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/013.jpg">
+                <div class="dropdown">
+                    <button>Hygiene & Personal Care</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Oral care</a>
+                        <a href="">Shaving essentials</a>
+                        <a href="">Feminine hygiene</a>
+                        <a href="">Hand Care</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/014.jpg">
+                <div class="dropdown">
+                    <button>Bath & Body</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Body Lotions</a>
+                        <a href="">Shampoos</a>
+                        <a href="">Soaps</a>
+                        <a href="">Body wash</a>
+                        <a href="">Hair care & styling</a>
+                        <a href="">Deodorants</a>
+                        <a href="">Bathing Accessories</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/015.jpg">
+                <div class="dropdown">
+                    <button>Beauty & Makeup</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Lip care</a>
+                        <a href="">Face creams</a>
+                        <a href="">Make-up Remover</a>
+                        <a href="">Eye make-up</a>
+                        <a href="">Sunscreens</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/016.jpg">
+                <div class="dropdown">
+                    <button>Pet Supplies</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Cat supplies</a>
+                        <a href="">Dog supplies</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/017.jpg">
+                <div class="dropdown">
+                    <button>Baby Care</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Bath & skin care</a>
+                        <a href="">Detergents</a>
+                        <a href="">Diapers</a>
+                        <a href="">Oral care</a>
+                        <a href="">Baby nutrition</a>
+                        <a href="">Wet wipes</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <img src="../static/images/018.jpg">
+                <div class="dropdown">
+                    <button>Kitchen & Home</button>
+                    <p>Upto 30% Off</p>
+                    <a href="{% url 'insert' %}" class="Shop-button">Shop Now</a>
+                    <div class="content">
+                        <a href="">Pooja items</a>
+                        <a href="">Incense Sticks</a>
+                        <a href="">Air fresheners</a>
+                        <a href="">Paper towels & tissues</a>
+                        <a href="">Utilities</a>
+                        <a href="">Garbage bags</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="landing_footer">
+            <div class="footer-column">
+                <h2>About Us</h2>
+                <h3>Our Story</h3>
+                <h3>Careers</h3>
+            </div>
+            <div class="footer-column">
+                <h2>Contact us</h2>
+                <h3>Phone: 7899447395</h3>
+                <h3>Email: syed@gmail.com</h3>
+                <h3>@copyright || All rights Reserved</h3>
+            </div>
+            <div class="footer-column">
+                <h2>Let us help you</h2>
+                <h3>Returns centre</h3>
+                <h3>Help</h3>
+            </div>
+        </footer>
+    </section>
+
+   <script>
+        function searchProduct() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            if (searchInput === 'fruits','vegetables','oil') {
+                document.getElementById('fruits').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert('Product not found');
+            }
+        }
+    </script>
+</body>
+</html>

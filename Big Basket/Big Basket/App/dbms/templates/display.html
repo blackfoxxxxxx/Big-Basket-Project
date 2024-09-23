@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block start %}
+<title>Data</title>
+<style>
+    .container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    table {
+        border: none;
+        border-spacing: 0;
+        width: 100%;
+    }
+    th, td {
+        padding: 10px;
+        text-align: center;
+        height: 80px;
+        margin: 0;
+    }
+    th {
+        background-color: rgb(87, 81, 81);
+        color: yellow;
+    }
+    tr:nth-child(odd) {
+        background-color: rgb(175, 166, 166);
+    }
+    button {
+        width: 100px;
+        height: 35px;
+        border-radius: 12px;
+        color: white;
+        font-weight: bold;
+        border: none;
+    }
+    button:hover {
+        transform: scale(1.1);
+        opacity: 0.5;
+    }
+    #edit {
+        background-color: green;
+    }
+    #del {
+        background-color: red;
+    }
+    .display2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 6px;
+        background-color: #1f2131e5;
+        border: 6px solid #1f2131e5;
+        color: yellow;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+    .display2:hover {
+        background-color: yellow;
+        color: #1f2131e5;
+    }
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container">
+    <table id="table1">
+        <tr>
+            <th>SLNO</th>
+            <th>Product Name</th>
+        </tr>
+        {% for i in result.products %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.product_name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <table>
+        <tr>
+            <th>Customer Name</th>
+            <th>Phone Number</th>
+        </tr>
+        {% for i in result.customer %}
+        <tr>
+            <td>{{ i.customer_name }}</td>
+            <td>{{ i.phone_number }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <table>
+        <tr>
+            <th>Payment Mode</th>
+            <th>Amount</th>
+        </tr>
+        {% for i in result.payment %}
+        <tr>
+            <td>{{ i.Payment_mode }}</td>
+            <td>{{ i.amount }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <table id="table-n">
+        <tr>
+            <th>Quantity</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        {% for i in result.orderdetails %}
+        <tr>
+            <td>{{ i.order_quantity }}</td>
+            <td><a href="/update/{{ i.id }}"><button id="edit">Edit</button></a></td>
+            <td><a href="/delete/{{ i.id }}"><button id="del">Delete</button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="button-container">
+    <div class="display2">
+        <label><a style="color: yellow;" href="{% url 'display2' %}">BILLING</a></label>
+    </div>
+</div>
+{% endblock %}

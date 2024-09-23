@@ -1,0 +1,142 @@
+{%  extends "base.html" %}
+{%  block start %}
+    <title>Home</title>
+    <style>
+        /* Navbar styles */
+        .navbar {
+            height: 75px;
+            width: 100%;
+            background-color: #ff6f61; /* Coral */
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .navbar h1 {
+            text-align: center;
+            line-height: 75px;
+            color: #ffffff; /* White color */
+            font-size: 2.5rem;
+            font-family: 'Poppins', sans-serif; /* Poppins font */
+        }
+    
+        table {
+            margin-top: 25px;
+            margin-left: 70px;
+        }
+    
+        input {
+            width: 250px;
+            height: 50px;
+            margin: 8px;
+            border: none;
+            text-align: center;
+            border-bottom: 1px solid #3498db; /* Blue */
+            transition: all 0.6s ease-in;
+            font-family: 'Open Sans', sans-serif; /* Open Sans font */
+        }
+    
+        input:focus {
+            outline: none;
+            border-radius: 14px;
+            background-color: #f9fbe7; /* Light Green */
+            color: #333; /* Dark Gray */
+            border-bottom: 1px solid #27ae60; /* Green */
+        }
+    
+        td {
+            color: #333; /* Dark Gray */
+            font-family: 'Open Sans', sans-serif; /* Open Sans font */
+        }
+    
+        button {
+            border: none;
+            width: 100px;
+            height: 35px;
+            color: white;
+            font-weight: bold;
+            border-radius: 14px;
+            transition: all 0.2s ease-in;
+            margin: 20px 0px 20px 200px;
+            font-family: 'Poppins', sans-serif; /* Poppins font */
+        }
+    
+        #sub {
+            background-color: #fdcb6e; /* Gold */
+        }
+    
+        #dis {
+            background-color: #6ab04c; /* Emerald */
+            margin-left: 40px;
+        }
+    
+        button:hover {
+            transform: scale(1.2);
+        }
+    
+        select {
+            width: 243px;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-bottom: 1px solid #9b59b6; /* Purple */
+            margin-left: 10px;
+            font-family: 'Open Sans', sans-serif; /* Open Sans font */
+        }
+    
+        .container {
+            display: flex;
+        }
+    
+        .container .image {
+            margin: 100px 50px;
+        }
+    
+        .container img {
+            border-radius: 50px;
+        }
+    </style>
+    
+    <nav class="navbar">
+        <h1>BIG BASKET</h1>
+    </nav>
+    <div class="container">
+
+        <form action="/save" method="post">
+            {%  csrf_token %}
+            <table>
+            <tr>
+                <td>Enter The Product Name:</td>
+                <td><input type="text" name = "Pname"></td>
+            </tr>
+            <tr>
+                <td>Enter Customer Name:</td>
+                <td><input type="text" name = "Cname"></td>
+            </tr>
+            <tr>
+                <td>Enter Phone Number:</td>
+                <td><input type="number" name = "Pnumber"></td>
+            </tr>
+            <tr>
+                <td>Enter Payment Mode:</td>
+                <td><input type="text" name="Paymode" id=""></td>
+            </tr>
+            <tr>
+                <td>Enter Amount:</td>
+                <td><input type="text" name = "Amt"></td>
+            </tr>
+            <tr>
+                <td>Enter Quantity:</td>
+                <td><input type="text" name = "Qty"></td>
+            </tr>
+        </table>
+        <button type = "submit" name = "sub" id = "sub">Submit</button>
+        <!-- <a href="/display"><button type="button" name = "dis" id = "dis">Display</button></a>     -->
+    </form>
+    <div class="image">
+        <img src="../static/images/bigg basket.jpg" alt="image not found" width="610px" height="700px">
+    </div>
+</div>
+{%  endblock %}

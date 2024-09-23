@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #1d2630;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 80px;
+        }
+        h2 {
+            color: #007bff;
+            font-size: 32px; /* Increase font size */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        th, td {
+            text-align: center;
+        }
+        #totalAmount {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .message, .messag {
+            font-size: 18px; /* Adjusted font size */
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .signature {
+            font-size: 18px; /* Adjusted font size */
+            font-weight: 700;
+            text-align: right;
+            margin-top: 20px;
+            border-top: 1px solid #262626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-5 text-center">BIG BASKET INVOICE SLIP</h2>
+        <form id="invoiceForm">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="customerName">Customer Name</label>
+                    <input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name" required />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="invoiceDate">Date and Time</label>
+                    <input type="datetime-local" class="form-control" id="invoiceDate" required/>
+                </div>
+            </div>
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceItems">
+                    <!-- Items will be added here dynamically -->
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-primary" onclick="addInvoiceItem()">Add Item</button>
+            <div class="form-group col-md-6 mt-2">
+                <label for="totalAmount">Total Amount</label>
+                <input type="text" class="form-control" id="totalAmount" disabled readonly/>
+            </div>
+            <button type="submit" class="btn btn-success mt-2">Generate Invoice</button>
+        </form>
+        <button class="btn btn-danger btn-print mt-4" onclick="printInvoice()">Print Invoice</button>
+        <div class="message">
+            <p>Thank you for Shopping..!🛒</p>
+        </div>
+        <div class="messag">
+            <p>Visit Again🙂..!</p>
+        </div>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" integrity="sha512-nnzkI2u2Dy6HMnzMIkh7CPd1KX445z38XIu4jG1jGw7x5tSL3VBjE44dY4ihMU1ijAQV930SPM12cCFrB18sVw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js" integrity="sha512-sNylduh9fqpYUK5OYXWcBleGzbZInWj8yCJAU57r1dpSK9tP2ghf/SRYCMj+KsslFkCOt3TvJrX2AV/Gc3wOqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+        let itemCounter = 0;
+
+        function addInvoiceItem() {
+            itemCounter++;
+            const newItemRow = `
+                <tr id="itemRow${itemCounter}">
+                    <td><input type="text" class="form-control" placeholder="Enter Description" required></td>
+                    <td><input type="number" class="form-control quantity" placeholder="Enter Quantity" required></td>
+                    <td><input type="text" class="form-control unitPrice" placeholder="Enter Unit Price" required></td>
+                    <td><input type="text" class="form-control totalItemPrice" disabled readonly></td>
+                    <td><button type="button" class="btn btn-danger" onclick="removeInvoiceItem(${itemCounter})">Remove</button></td>
+                </tr>
+            `;
+            document.getElementById('invoiceItems').insertAdjacentHTML('beforeend', newItemRow);
+            updateTotalAmount();
+        }
+
+        function removeInvoiceItem(itemId) {
+            document.getElementById(`itemRow${itemId}`).remove();
+            updateTotalAmount();
+        }
+
+        function updateTotalAmount() {
+            let totalAmount = 0;
+            document.querySelectorAll("tr[id^='itemRow']").forEach(row => {
+                const quantity = parseFloat(row.querySelector(".quantity").value) || 0;
+                const unitPrice = parseFloat(row.querySelector(".unitPrice").value) || 0;
+                const totalItemPrice = quantity * unitPrice;
+                row.querySelector(".totalItemPrice").value = totalItemPrice.toFixed(2);
+                totalAmount += totalItemPrice;
+            });
+            document.getElementById('totalAmount').value = totalAmount.toFixed(2);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the form if needed
+        });
+
+        document.getElementById('invoiceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Here you can handle the form submission logic, e.g., save data or show a confirmation message.
+            updateTotalAmount(); // Ensure total amount is updated before processing.
+        });
+
+        function printInvoice() {
+            const customerName = document.getElementById('customerName').value;
+            const invoiceDate = document.getElementById('invoiceDate').value;
+            const items = [];
+
+            document.querySelectorAll("tr[id^='itemRow']").forEach(row => {
+                const description = row.querySelector("td:nth-child(1) input").value;
+                const quantity = row.querySelector("td:nth-child(2) input").value;
+                const unitPrice = row.querySelector("td:nth-child(3) input").value;
+                const totalItemPrice = row.querySelector("td:nth-child(4) input").value;
+
+                items.push({
+                    description: description,
+                    quantity: quantity,
+                    unitPrice: unitPrice,
+                    totalItemPrice: totalItemPrice,
+                });
+            });
+
+            const totalAmount = document.getElementById('totalAmount').value;
+
+            const invoiceContent = `
+                <html>
+                <head>
+                    <title>Invoice Slip</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                        }
+                        h2 {
+                            color: #007bff;
+                            font-size: 32px;
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 20px;
+                        }
+                        th, td {
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                        }
+                        .total {
+                            font-weight: bold;
+                        }
+                        .message, .messag {
+                            font-size: 18px;
+                            font-weight: 700;
+                            text-align: center;
+                            margin-bottom: 10px;
+                        }
+                        .signature {
+                            font-size: 18px;
+                            font-weight: 700;
+                            text-align: right;
+                            margin-top: 20px;
+                            border-top: 1px solid #262626;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>BIG BASKET INVOICE SLIP</h2>
+                    <p><strong>Customer Name:</strong> ${customerName}</p>
+                    <p><strong>Date and Time:</strong> ${invoiceDate}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${items.map(item => `
+                                <tr>
+                                    <td>${item.description}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>${item.unitPrice}</td>
+                                    <td>${item.totalItemPrice}</td>
+                                </tr>
+                            `).join("")}
+                        </tbody>
+                    </table>
+                    <p class="total">Total Amount: ${totalAmount}</p>
+                    <div class="message">
+                        <p>Thank you for Shopping..!🛒</p>
+                    </div>
+                    <div class="messag">
+                        <p>Visit Again🙂..!</p>
+                    </div>
+                    <div class="signature">
+                        <p>Signature</p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(invoiceContent);
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>
